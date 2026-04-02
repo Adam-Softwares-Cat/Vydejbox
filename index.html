@@ -25,15 +25,6 @@ button {
 }
 </style>
 </head>
-<body>
-
-    <audio id="okSound" preload="auto" playsinline>
-    <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="errSound" preload="auto" playsinline>
-    <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
-</audio>
 
 <h1>Výdejní box</h1>
 
@@ -60,6 +51,34 @@ button {
 <h2 id="result"></h2>
 
 <script>
+
+    function playSound(src){
+    let sound = new Audio(src);
+    sound.play().catch(()=>{});
+}
+
+function confirmCode(){
+    let data = JSON.parse(localStorage.getItem("boxes") || "[]");
+    let found = data.find(b => b.code === code);
+
+    if(found){
+        document.getElementById("result").innerText =
+            "Balík: " + found.name + " | Box: " + found.box;
+
+        playSound("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+
+        setTimeout(() => {
+            document.getElementById("result").innerText = "";
+        }, 10000);
+    } else {
+        document.getElementById("result").innerText = "Neplatný kód";
+
+        playSound("https://www.soundjay.com/buttons/sounds/button-10.mp3");
+    }
+
+    code = "";
+    update();
+}
 
     let unlocked = false;
 
