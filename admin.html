@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+</head>
+<body>
+
+<h1>Admin panel</h1>
+
+<h3>Přidat balík</h3>
+
+Jméno:<br>
+<input id="name"><br>
+
+Box číslo:<br>
+<input id="box"><br>
+
+Kód:<br>
+<input id="code"><br><br>
+
+<button onclick="add()">Přidat</button>
+
+<h3>Seznam balíků</h3>
+<ul id="list"></ul>
+
+<script>
+function load(){
+    let data = JSON.parse(localStorage.getItem("boxes") || "[]");
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    data.forEach((b, i) => {
+        let li = document.createElement("li");
+        li.innerText = b.name + " | Box: " + b.box + " | Kód: " + b.code;
+
+        let del = document.createElement("button");
+        del.innerText = "Smazat";
+        del.onclick = () => remove(i);
+
+        li.appendChild(del);
+        list.appendChild(li);
+    });
+}
+
+function add(){
+    let name = document.getElementById("name").value;
+    let box = document.getElementById("box").value;
+    let code = document.getElementById("code").value;
+
+    let data = JSON.parse(localStorage.getItem("boxes") || "[]");
+
+    data.push({name, box, code});
+    localStorage.setItem("boxes", JSON.stringify(data));
+
+    load();
+}
+
+function remove(i){
+    let data = JSON.parse(localStorage.getItem("boxes") || "[]");
+    data.splice(i,1);
+    localStorage.setItem("boxes", JSON.stringify(data));
+    load();
+}
+
+load();
+</script>
+
+</body>
+</html>
