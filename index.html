@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Výdejní box</title>
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+}
+.display {
+    font-size: 40px;
+    margin: 20px;
+    height: 50px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+}
+button {
+    font-size: 30px;
+    padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>Výdejní box</h1>
+
+<div class="display" id="display"></div>
+
+<div class="grid">
+    <button onclick="add(1)">1</button>
+    <button onclick="add(2)">2</button>
+    <button onclick="add(3)">3</button>
+    <button onclick="add(4)">4</button>
+    <button onclick="add(5)">5</button>
+    <button onclick="add(6)">6</button>
+    <button onclick="add(7)">7</button>
+    <button onclick="add(8)">8</button>
+    <button onclick="add(9)">9</button>
+    <button onclick="clearAll()">C</button>
+    <button onclick="add(0)">0</button>
+    <button onclick="del()">←</button>
+</div>
+
+<br>
+<button onclick="confirmCode()">Potvrdit</button>
+
+<h2 id="result"></h2>
+
+<script>
+let code = "";
+
+function add(num){
+    if(code.length < 10){
+        code += num;
+        update();
+    }
+}
+
+function update(){
+    document.getElementById("display").innerText = code;
+}
+
+function clearAll(){
+    code = "";
+    update();
+}
+
+function del(){
+    code = code.slice(0, -1);
+    update();
+}
+
+function confirmCode(){
+    let data = JSON.parse(localStorage.getItem("boxes") || "[]");
+    let found = data.find(b => b.code === code);
+
+    if(found){
+        document.getElementById("result").innerText =
+            "Balík: " + found.name + " | Box: " + found.box;
+
+        setTimeout(() => {
+            document.getElementById("result").innerText = "";
+        }, 10000);
+    } else {
+        document.getElementById("result").innerText = "Neplatný kód";
+    }
+
+    code = "";
+    update();
+}
+</script>
+
+</body>
+</html>
