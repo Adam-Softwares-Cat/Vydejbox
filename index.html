@@ -52,6 +52,13 @@ button {
 
 <script>
 
+    function flash(color){
+    document.body.style.background = color;
+    setTimeout(() => {
+        document.body.style.background = "white";
+    }, 500);
+}
+
     function playSound(src){
     let sound = new Audio(src);
     sound.play().catch(()=>{});
@@ -60,7 +67,12 @@ button {
 function confirmCode(){
     let data = JSON.parse(localStorage.getItem("boxes") || "[]");
     let found = data.find(b => b.code === code);
-
+if(found){
+    flash("lightgreen");
+} else {
+    flash("red");
+}
+    
     if(found){
         document.getElementById("result").innerText =
             "Balík: " + found.name + " | Box: " + found.box;
