@@ -27,6 +27,9 @@ button {
 </head>
 <body>
 
+    <audio id="okSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="errSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
 <h1>Výdejní box</h1>
 
 <div class="display" id="display"></div>
@@ -83,11 +86,15 @@ function confirmCode(){
         document.getElementById("result").innerText =
             "Balík: " + found.name + " | Box: " + found.box;
 
+        document.getElementById("okSound").play();
+
         setTimeout(() => {
             document.getElementById("result").innerText = "";
         }, 10000);
     } else {
         document.getElementById("result").innerText = "Neplatný kód";
+
+        document.getElementById("errSound").play();
     }
 
     code = "";
