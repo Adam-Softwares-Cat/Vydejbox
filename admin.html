@@ -21,10 +21,32 @@ Kód:<br>
 
 <button onclick="add()">Přidat</button>
 
+    <h3>Nastavení serveru</h3>
+
+IP adresa Macu:<br>
+<input id="serverIp" placeholder="např. 192.168.0.25"><br><br>
+
+<button onclick="saveIp()">Uložit IP</button>
+
 <h3>Seznam balíků</h3>
 <ul id="list"></ul>
 
 <script>
+
+    function saveIp(){
+    let ip = document.getElementById("serverIp").value;
+    localStorage.setItem("serverIp", ip);
+}
+
+function loadIp(){
+    let ip = localStorage.getItem("serverIp");
+    if(ip){
+        document.getElementById("serverIp").value = ip;
+    }
+}
+
+loadIp();
+    
 function load(){
     let data = JSON.parse(localStorage.getItem("boxes") || "[]");
     let list = document.getElementById("list");
