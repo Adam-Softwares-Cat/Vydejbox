@@ -128,22 +128,30 @@ function del(){
 }
 
 function confirmCode(){
+
+    let ip = localStorage.getItem("serverIp");
+
+    if(ip){
+        fetch("http://" + ip + ":3000/log", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code: code,
+                time: new Date().toISOString()
+            })
+        }).catch(()=>{});
+    }
+
     let data = JSON.parse(localStorage.getItem("boxes") || "[]");
     let found = data.find(b => b.code === code);
 
     if(found){
         document.getElementById("result").innerText =
             "Balík: " + found.name + " | Box: " + found.box;
-
-        document.getElementById("okSound").play().catch(()=>{});
-
-        setTimeout(() => {
-            document.getElementById("result").innerText = "";
-        }, 10000);
     } else {
         document.getElementById("result").innerText = "Neplatný kód";
-
-        document.getElementById("errSound").play().catch(()=>{});
     }
 
     code = "";
